@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"> 
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ej page</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <h1>Welcome {{user.username}}</h1>
+    {% if user.userprofile.photo != None%}
+    <img style="width:200px; height:200px;" src="{{ user.userprofile.photo.url }}"/>
+    {%endif%}
+    <h1><a href="{% url 'logout' %}">logout</a></h1>
+    <h1><a href="{% url 'post_new' %}" >new post</a> </h1>
+    <h1><a href="{% url 'profile' %}">profile</a></h1>
+    <h1>What chat room would you like to enter? </h1><br>
+    <input id="room-name-input" type="text" size="100"><br>
+    <input id="room-name-submit" type="button" value="Enter">
+
+    
+
+
+    <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            window.location.pathname = '/chat/' + roomName + '/';
+        };
+    </script>
+    {% endif%}
+
+    {%if not user.is_authenticated%}<h1><a href="{% url 'login' %}">login</a> </h1> 
+    <h1><a href="{% url 'register' %}">register</a> </h1>{%endif%}
+    <h5>Helllo World</h5>
+    {% for post in posts %}
+        <h5>{{post}} </h5>
+    {% endfor %}
+
+</body>
+</html>
